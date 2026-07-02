@@ -1,0 +1,7 @@
+worker.js
+wrangler.jsonc
+schema.sql
+admin.html
+migrations/**
+.git/**
+.gitignore

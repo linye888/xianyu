@@ -695,6 +695,17 @@
       fbq('init', '4377607675843081');
       fbq('track', 'PageView');
 
+      function trackEvent(type, position) {
+        fetch('/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: type, position: position || null }),
+          keepalive: true
+        }).catch(function() {});
+      }
+
+      trackEvent('pageview');
+
       function trackDownload(event, buttonPosition) {
         event.preventDefault();
 
@@ -704,6 +715,8 @@
         const now = Date.now();
         const lastTrackedAt = Number(localStorage.getItem(leadStorageKey) || 0);
         const shouldTrackLead = !lastTrackedAt || now - lastTrackedAt > sevenDaysMs;
+
+        trackEvent('download', buttonPosition);
 
         if (shouldTrackLead && window.fbq) {
           fbq('track', 'Lead', {
@@ -748,6 +761,8 @@
         const now = Date.now();
         const lastTrackedAt = Number(localStorage.getItem(leadStorageKey) || 0);
         const shouldTrackLead = !lastTrackedAt || now - lastTrackedAt > sevenDaysMs;
+
+        trackEvent('download', 'drama_modal');
 
         if (shouldTrackLead && window.fbq) {
           fbq('track', 'Lead', {

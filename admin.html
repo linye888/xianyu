@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Short 访问统计后台</title>
+    <style>
+      :root {
+        --ink: #fff7f8;
+        --muted: #b9aeb6;
+        --paper: #100c11;
+        --surface: #1b141b;
+        --rose: #ff2f65;
+        --gold: #ffd33d;
+        --mint: #19c8a2;
+        --line: rgba(255, 255, 255, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 18% 0%, rgba(255, 47, 101, 0.18), transparent 28%),
+          linear-gradient(160deg, #08060a 0%, #151017 52%, #08060a 100%);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      .wrap {
+        width: min(100%, 1080px);
+        margin: 0 auto;
+        padding: 24px 18px 40px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 20px;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .sub {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .login {
+        max-width: 420px;
+        margin: 80px auto 0;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      input,
+      select,
+      button {
+        font: inherit;
+      }
+
+      input,
+      select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px 14px;
+        background: rgba(0, 0, 0, 0.25);
+        color: var(--ink);
+      }
+
+      button {
+        border: 0;
+        border-radius: 12px;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, #e81752, #ff6a88);
+        color: white;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+      }
+
+      .toolbar-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .stat {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 28px;
+        line-height: 1.1;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 14px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      th,
+      td {
+        padding: 10px 8px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 4px 8px;
+        background: rgba(255, 211, 61, 0.12);
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .error {
+        margin-top: 12px;
+        color: #ff8da3;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .logout {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--ink);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <section id="loginPanel" class="card login">
+        <h1>访问统计后台</h1>
+        <p class="sub">登录后查看访问量、下载点击、独立 IP 与国家分布。</p>
+        <form id="loginForm" style="margin-top: 18px">
+          <label for="password">管理员密码</label>
+          <input id="password" type="password" autocomplete="current-password" required />
+          <button type="submit" style="width: 100%; margin-top: 14px">登录</button>
+        </form>
+        <p id="loginError" class="error hidden"></p>
+      </section>
+
+      <section id="dashboard" class="hidden">
+        <div class="toolbar">
+          <div>
+            <h1>Mini Short 数据统计</h1>
+            <p class="sub" id="updatedAt">--</p>
+          </div>
+          <div class="toolbar-actions">
+            <select id="period">
+              <option value="all">全部时间</option>
+              <option value="today">今天</option>
+              <option value="7d">近 7 天</option>
+            </select>
+            <button id="refreshBtn" type="button">刷新</button>
+            <button id="logoutBtn" class="logout" type="button">退出</button>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <strong id="pageviews">0</strong>
+            <span>访问次数</span>
+          </div>
+          <div class="stat">
+            <strong id="uniqueVisitors">0</strong>
+            <span>独立访客 IP</span>
+          </div>
+          <div class="stat">
+            <strong id="downloads">0</strong>
+            <span>下载点击次数</span>
+          </div>
+          <div class="stat">
+            <strong id="uniqueDownloadIps">0</strong>
+            <span>独立下载 IP</span>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h2>国家分布（全部事件）</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>国家</th>
+                  <th>次数</th>
+                </tr>
+              </thead>
+              <tbody id="countryTable"></tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h2>国家独立访客</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>国家</th>
+                  <th>独立 IP</th>
+                </tr>
+              </thead>
+              <tbody id="countryVisitorTable"></tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h2>下载按钮分布</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>按钮位置</th>
+                  <th>点击次数</th>
+                </tr>
+              </thead>
+              <tbody id="buttonTable"></tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h2>最近事件</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>类型</th>
+                  <th>国家</th>
+                  <th>位置</th>
+                  <th>时间</th>
+                </tr>
+              </thead>
+              <tbody id="recentTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const TOKEN_KEY = "xianyu_admin_token";
+
+      const loginPanel = document.getElementById("loginPanel");
+      const dashboard = document.getElementById("dashboard");
+      const loginForm = document.getElementById("loginForm");
+      const loginError = document.getElementById("loginError");
+      const periodSelect = document.getElementById("period");
+
+      function getToken() {
+        return sessionStorage.getItem(TOKEN_KEY);
+      }
+
+      function setToken(token) {
+        sessionStorage.setItem(TOKEN_KEY, token);
+      }
+
+      function clearToken() {
+        sessionStorage.removeItem(TOKEN_KEY);
+      }
+
+      function showLogin(message) {
+        dashboard.classList.add("hidden");
+        loginPanel.classList.remove("hidden");
+        if (message) {
+          loginError.textContent = message;
+          loginError.classList.remove("hidden");
+        } else {
+          loginError.classList.add("hidden");
+        }
+      }
+
+      function showDashboard() {
+        loginPanel.classList.add("hidden");
+        dashboard.classList.remove("hidden");
+      }
+
+      function renderRows(targetId, rows, emptyText) {
+        const target = document.getElementById(targetId);
+        if (!rows.length) {
+          target.innerHTML = `<tr><td colspan="4" class="muted">${emptyText}</td></tr>`;
+          return;
+        }
+        target.innerHTML = rows
+          .map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`)
+          .join("");
+      }
+
+      async function loadStats() {
+        const token = getToken();
+        if (!token) {
+          showLogin();
+          return;
+        }
+
+        const period = periodSelect.value;
+        const response = await fetch(`/api/stats?period=${encodeURIComponent(period)}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 401) {
+          clearToken();
+          showLogin("登录已过期，请重新登录。");
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error("加载统计数据失败");
+        }
+
+        const data = await response.json();
+        document.getElementById("pageviews").textContent = data.pageviews;
+        document.getElementById("uniqueVisitors").textContent = data.uniqueVisitors;
+        document.getElementById("downloads").textContent = data.downloads;
+        document.getElementById("uniqueDownloadIps").textContent = data.uniqueDownloadIps;
+        document.getElementById("updatedAt").textContent = `更新时间：${new Date(
+          data.updatedAt
+        ).toLocaleString("zh-CN")}`;
+
+        renderRows(
+          "countryTable",
+          data.countries.map((item) => [
+            `${item.countryName} (${item.country})`,
+            item.count,
+          ]),
+          "暂无数据"
+        );
+
+        renderRows(
+          "countryVisitorTable",
+          data.countryVisitors.map((item) => [
+            `${item.countryName} (${item.country})`,
+            item.count,
+          ]),
+          "暂无数据"
+        );
+
+        renderRows(
+          "buttonTable",
+          data.buttonStats.map((item) => [item.position, item.count]),
+          "暂无下载记录"
+        );
+
+        renderRows(
+          "recentTable",
+          data.recentEvents.map((item) => [
+            `<span class="pill">${item.event_type}</span>`,
+            item.country ?? "UNKNOWN",
+            item.button_position ?? "-",
+            item.created_at,
+          ]),
+          "暂无事件"
+        );
+
+        showDashboard();
+      }
+
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        loginError.classList.add("hidden");
+
+        const password = document.getElementById("password").value;
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          showLogin(data.error || "登录失败");
+          return;
+        }
+
+        const data = await response.json();
+        setToken(data.token);
+        await loadStats();
+      });
+
+      document.getElementById("refreshBtn").addEventListener("click", () => {
+        loadStats().catch(() => showLogin("刷新失败，请稍后重试。"));
+      });
+
+      periodSelect.addEventListener("change", () => {
+        loadStats().catch(() => showLogin("加载失败，请稍后重试。"));
+      });
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        clearToken();
+        showLogin();
+      });
+
+      if (getToken()) {
+        loadStats().catch(() => showLogin());
+      }
+    </script>
+  </body>
+</html>
