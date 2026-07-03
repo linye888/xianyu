@@ -1,7 +1,13 @@
+node_modules
+package.json
+package-lock.json
+.wrangler
+.dev.vars*
+.env*
 worker.js
 wrangler.jsonc
 schema.sql
-admin.html
-migrations/**
-.git/**
+migrations
+.git
 .gitignore
+.assetsignore
