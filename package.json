@@ -2,6 +2,7 @@
   "name": "xianyu",
   "private": true,
   "scripts": {
+    "download:reelshort-trailer": "python3 scripts/download-reelshort-trailer.py",
     "deploy": "wrangler deploy",
     "d1:create": "wrangler d1 create xianyu-analytics",
     "d1:migrate": "wrangler d1 migrations apply xianyu-analytics --remote",
