@@ -15,25 +15,52 @@ if (!defined('ABSPATH')) {
 $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
 ?>
 <!doctype html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> class="payment-form-page-root">
   <head>
     <meta charset="<?php bloginfo('charset'); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <?php wp_head(); ?>
-    <style>
-      body.payment-form-page {
+    <style id="payment-form-styles">
+      html.payment-form-page-root,
+      html.payment-form-page-root body.payment-form-page {
         margin: 0 !important;
-        min-height: 100vh;
+        padding: 0 !important;
+        min-height: 100vh !important;
         background: #1a1613 !important;
+        background-color: #1a1613 !important;
       }
 
+      body.payment-form-page .site,
       body.payment-form-page #page,
-      body.payment-form-page .site-content,
+      body.payment-form-page #content,
+      body.payment-form-page .site-main,
+      body.payment-form-page main:not(.page),
       body.payment-form-page .content-area,
-      body.payment-form-page .entry-content {
+      body.payment-form-page .entry-content,
+      body.payment-form-page article,
+      body.payment-form-page .page-content,
+      body.payment-form-page .woocommerce,
+      body.payment-form-page .elementor,
+      body.payment-form-page .elementor-section,
+      body.payment-form-page .wp-block-group,
+      body.payment-form-page .container,
+      body.payment-form-page .wrapper {
         margin: 0 !important;
         padding: 0 !important;
         max-width: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+      }
+
+      body.payment-form-page .site-header,
+      body.payment-form-page header.header,
+      body.payment-form-page .site-footer,
+      body.payment-form-page footer.footer,
+      body.payment-form-page .page-header,
+      body.payment-form-page .breadcrumb,
+      body.payment-form-page .entry-header {
+        display: none !important;
       }
 
       .payment-page {
@@ -49,7 +76,9 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
         --radius-pill: 999px;
         box-sizing: border-box;
         min-height: 100vh;
-        background: var(--bg);
+        width: 100%;
+        background: #1a1613 !important;
+        background-color: #1a1613 !important;
         color: var(--label);
         font-family:
           Inter,
@@ -296,7 +325,7 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
   <body <?php body_class('payment-form-page'); ?>>
     <?php wp_body_open(); ?>
 
-    <div class="payment-page">
+    <div class="payment-page" style="background:#1a1613;min-height:100vh;">
       <main class="page">
         <div class="topbar">
           <button type="button" class="back-btn" id="back-btn" aria-label="Go back">

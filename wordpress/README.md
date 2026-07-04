@@ -33,4 +33,6 @@
 ## Notes
 
 - Use a **child theme** so theme updates do not remove the file.
-- If your theme still shows header/footer, switch to a blank/full-width page template in theme settings, or hide header via theme options.
+- **Important:** assign the page template **Payment Form** in Page attributes. Do not paste HTML into the page editor, or theme styles will override the dark background.
+- Styles load **after** `wp_head()` so they override theme CSS.
+- If background is still white, re-upload the latest `page-payment.php` and clear Kinsta/cache plugins.
