@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mode de paiement</title>
+    <style>
+      :root {
+        --bg: #1a1613;
+        --input-bg: #3d3630;
+        --input-text: #d8d2cb;
+        --label: #f5f0ea;
+        --accent: #e6d5b8;
+        --accent-dark: #5c4a32;
+        --accent-gradient: linear-gradient(180deg, #f0e2c8 0%, #d9c4a0 100%);
+        --success: #4caf50;
+        --muted: #a39a92;
+        --radius-pill: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--label);
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page {
+        width: min(100%, 420px);
+        margin: 0 auto;
+        min-height: 100vh;
+        padding: 28px 20px 40px;
+      }
+
+      .section-label {
+        margin: 0 0 14px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--label);
+      }
+
+      .currency-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 22px;
+        padding: 8px 14px 8px 10px;
+        border: none;
+        border-radius: 12px;
+        background: var(--accent-gradient);
+        color: #fff;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      }
+
+      .currency-icon {
+        display: grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--success);
+        font-size: 11px;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .field {
+        position: relative;
+      }
+
+      .field input,
+      .field select {
+        width: 100%;
+        height: 52px;
+        padding: 0 44px 0 18px;
+        border: none;
+        border-radius: var(--radius-pill);
+        background: var(--input-bg);
+        color: var(--input-text);
+        font: inherit;
+        font-size: 14px;
+        outline: none;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+
+      .field input::placeholder {
+        color: #9a928a;
+      }
+
+      .field input:focus,
+      .field select:focus {
+        box-shadow: 0 0 0 2px rgba(230, 213, 184, 0.35);
+      }
+
+      .field select {
+        cursor: pointer;
+      }
+
+      .field-icon {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        transform: translateY(-50%);
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        color: #b8afa6;
+        pointer-events: none;
+      }
+
+      .field-icon.clickable {
+        pointer-events: auto;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        padding: 0;
+      }
+
+      .field-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .stepper {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        width: 14px;
+      }
+
+      .stepper span {
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+      }
+
+      .stepper .up {
+        border-bottom: 6px solid #b8afa6;
+      }
+
+      .stepper .down {
+        border-top: 6px solid #b8afa6;
+      }
+
+      .summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 6px;
+        padding: 0 4px;
+        font-size: 14px;
+      }
+
+      .summary-label {
+        color: var(--muted);
+      }
+
+      .summary-value {
+        color: var(--success);
+        font-weight: 700;
+      }
+
+      .submit {
+        width: 100%;
+        height: 54px;
+        margin-top: 18px;
+        border: none;
+        border-radius: 16px;
+        background: var(--accent-gradient);
+        color: var(--accent-dark);
+        font: inherit;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+      }
+
+      .submit:active {
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <h1 class="section-label">Mode de paiement</h1>
+
+      <button type="button" class="currency-chip" aria-label="Devise XOF">
+        <span class="currency-icon" aria-hidden="true">₣</span>
+        XOF
+      </button>
+
+      <form class="form" action="#" method="post">
+        <div class="field">
+          <input
+            type="number"
+            name="amount"
+            placeholder="Plage de limite de retrait 400.000 - 2000000.00"
+            min="400000"
+            max="2000000"
+            step="0.01"
+          />
+          <span class="field-icon" aria-hidden="true">
+            <span class="stepper">
+              <span class="up"></span>
+              <span class="down"></span>
+            </span>
+          </span>
+        </div>
+
+        <div class="field">
+          <select name="provider" aria-label="Fournisseur de paiement">
+            <option value="wave" selected>Wave</option>
+            <option value="orange">Orange Money</option>
+            <option value="mtn">MTN Mobile Money</option>
+          </select>
+          <span class="field-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+
+        <div class="field">
+          <input type="text" name="account_name" value="WaveEMMANUELKOUASSI" />
+        </div>
+
+        <div class="field">
+          <input type="tel" name="phone" value="0152413073" />
+        </div>
+
+        <div class="field">
+          <input
+            id="security-password"
+            type="password"
+            name="security_password"
+            placeholder="Mot de passe de sécurité"
+          />
+          <button
+            type="button"
+            class="field-icon clickable"
+            id="toggle-password"
+            aria-label="Afficher le mot de passe"
+          >
+            <svg id="eye-open" viewBox="0 0 24 24">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg id="eye-closed" viewBox="0 0 24 24" hidden>
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path>
+              <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="summary">
+          <span class="summary-label">Reçu</span>
+          <span class="summary-value" id="received-amount">0 XOF</span>
+        </div>
+
+        <button type="submit" class="submit">Confirmer</button>
+      </form>
+    </main>
+
+    <script>
+      const passwordInput = document.getElementById("security-password");
+      const toggleButton = document.getElementById("toggle-password");
+      const eyeOpen = document.getElementById("eye-open");
+      const eyeClosed = document.getElementById("eye-closed");
+      const amountInput = document.querySelector('input[name="amount"]');
+      const receivedAmount = document.getElementById("received-amount");
+
+      toggleButton.addEventListener("click", () => {
+        const isHidden = passwordInput.type === "password";
+        passwordInput.type = isHidden ? "text" : "password";
+        eyeOpen.hidden = !isHidden;
+        eyeClosed.hidden = isHidden;
+        toggleButton.setAttribute(
+          "aria-label",
+          isHidden ? "Masquer le mot de passe" : "Afficher le mot de passe",
+        );
+      });
+
+      amountInput.addEventListener("input", () => {
+        const value = Number(amountInput.value);
+        receivedAmount.textContent = Number.isFinite(value) && value > 0 ? `${value} XOF` : "0 XOF";
+      });
+    </script>
+  </body>
+</html>
