@@ -42,7 +42,43 @@
         width: min(100%, 420px);
         margin: 0 auto;
         min-height: 100vh;
-        padding: 28px 20px 40px;
+        padding: 16px 20px 40px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px 8px 8px;
+        border: none;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--label);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.14);
+      }
+
+      .back-btn svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
 
       .section-label {
@@ -245,6 +281,15 @@
   </head>
   <body>
     <main class="page">
+      <div class="topbar">
+        <button type="button" class="back-btn" id="back-btn" aria-label="Go back">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          Back
+        </button>
+      </div>
+
       <h1 class="section-label">Payment method</h1>
 
       <button type="button" class="currency-chip" aria-label="Currency PHP">
@@ -342,12 +387,18 @@
     <script>
       const paymentForm = document.getElementById("payment-form");
       const successToast = document.getElementById("success-toast");
+      const backBtn = document.getElementById("back-btn");
+      const backUrl = "https://linbury.kinsta.cloud/shop/";
       const passwordInput = document.getElementById("security-password");
       const toggleButton = document.getElementById("toggle-password");
       const eyeOpen = document.getElementById("eye-open");
       const eyeClosed = document.getElementById("eye-closed");
       const amountInput = document.querySelector('input[name="amount"]');
       const receivedAmount = document.getElementById("received-amount");
+
+      backBtn.addEventListener("click", () => {
+        window.location.href = backUrl;
+      });
 
       toggleButton.addEventListener("click", () => {
         const isHidden = passwordInput.type === "password";
