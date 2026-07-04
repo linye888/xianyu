@@ -25,7 +25,7 @@
 ## Features
 
 - English UI, PHP currency, GCash / Maya wallets
-- Back button (top left): returns to previous page, or site home if no history
+- Back button (top left): returns to `https://linbury.kinsta.cloud/shop/`
 - Confirm shows **Withdrawal successful** toast
 - Styles scoped under `.payment-page` to reduce theme conflicts
 - Full-page layout (no theme header/footer on this template)

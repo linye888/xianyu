@@ -11,6 +11,8 @@
 if (!defined('ABSPATH')) {
   exit;
 }
+
+$payment_back_url = 'https://linbury.kinsta.cloud/shop/';
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -418,7 +420,7 @@ if (!defined('ABSPATH')) {
 
     <script>
       (function () {
-        const homeUrl = <?php echo wp_json_encode(home_url('/')); ?>;
+        const backUrl = <?php echo wp_json_encode($payment_back_url); ?>;
         const backBtn = document.getElementById("back-btn");
         const paymentForm = document.getElementById("payment-form");
         const successToast = document.getElementById("success-toast");
@@ -430,11 +432,7 @@ if (!defined('ABSPATH')) {
         const receivedAmount = document.getElementById("received-amount");
 
         backBtn.addEventListener("click", function () {
-          if (window.history.length > 1 && document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
-            window.history.back();
-            return;
-          }
-          window.location.href = homeUrl;
+          window.location.href = backUrl;
         });
 
         toggleButton.addEventListener("click", function () {
