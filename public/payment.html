@@ -216,6 +216,31 @@
       .submit:active {
         transform: translateY(0);
       }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 32px;
+        transform: translateX(-50%) translateY(16px);
+        min-width: min(100% - 40px, 360px);
+        padding: 14px 18px;
+        border-radius: 14px;
+        background: rgba(76, 175, 80, 0.95);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: center;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        z-index: 1000;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
     </style>
   </head>
   <body>
@@ -227,15 +252,15 @@
         PHP
       </button>
 
-      <form class="form" action="#" method="post">
+      <form class="form" id="payment-form" action="#" method="post">
         <div class="field">
           <input
             type="number"
             name="amount"
-            placeholder="Withdrawal limit range 400,000 - 2,000,000.00"
-            min="400000"
-            max="2000000"
-            step="0.01"
+            placeholder="Withdrawal limit range 400-200000"
+            min="400"
+            max="200000"
+            step="1"
           />
           <span class="field-icon" aria-hidden="true">
             <span class="stepper">
@@ -312,7 +337,11 @@
       </form>
     </main>
 
+    <div class="toast" id="success-toast" role="status" aria-live="polite">Withdrawal successful</div>
+
     <script>
+      const paymentForm = document.getElementById("payment-form");
+      const successToast = document.getElementById("success-toast");
       const passwordInput = document.getElementById("security-password");
       const toggleButton = document.getElementById("toggle-password");
       const eyeOpen = document.getElementById("eye-open");
@@ -334,6 +363,14 @@
       amountInput.addEventListener("input", () => {
         const value = Number(amountInput.value);
         receivedAmount.textContent = Number.isFinite(value) && value > 0 ? `${value} PHP` : "0 PHP";
+      });
+
+      paymentForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        successToast.classList.add("show");
+        window.setTimeout(() => {
+          successToast.classList.remove("show");
+        }, 2500);
       });
     </script>
   </body>
