@@ -222,9 +222,9 @@
     <main class="page">
       <h1 class="section-label">Mode de paiement</h1>
 
-      <button type="button" class="currency-chip" aria-label="Devise XOF">
-        <span class="currency-icon" aria-hidden="true">₣</span>
-        XOF
+      <button type="button" class="currency-chip" aria-label="Devise PHP">
+        <span class="currency-icon" aria-hidden="true">₱</span>
+        PHP
       </button>
 
       <form class="form" action="#" method="post">
@@ -293,7 +293,7 @@
 
         <div class="summary">
           <span class="summary-label">Reçu</span>
-          <span class="summary-value" id="received-amount">0 XOF</span>
+          <span class="summary-value" id="received-amount">0 PHP</span>
         </div>
 
         <button type="submit" class="submit">Confirmer</button>
@@ -321,7 +321,7 @@
 
       amountInput.addEventListener("input", () => {
         const value = Number(amountInput.value);
-        receivedAmount.textContent = Number.isFinite(value) && value > 0 ? `${value} XOF` : "0 XOF";
+        receivedAmount.textContent = Number.isFinite(value) && value > 0 ? `${value} PHP` : "0 PHP";
       });
     </script>
   </body>
