@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Payment Form
- * Description: Formulario móvil de pago y retiro (MXN, Mercado Pago, Spin by OXXO).
+ * Description: Formulario móvil de pago y retiro (MXN, Mercado Pago, Nu México).
  *
  * Install: copy this file to your (child) theme folder, e.g.
  * wp-content/themes/your-child-theme/page-payment.php
@@ -359,7 +359,7 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
           <div class="field">
             <select name="provider" aria-label="Proveedor de pago">
               <option value="mercado_pago" selected>Mercado Pago</option>
-              <option value="spin_oxxo">Spin by OXXO</option>
+              <option value="nu_mexico">Nu México</option>
             </select>
             <span class="field-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">

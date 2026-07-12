@@ -24,9 +24,9 @@
 
 ## Features
 
-- English UI, PHP currency, GCash / Maya wallets
+- Mexican Spanish (es-MX) UI, MXN currency, Mercado Pago / Nu México wallets
 - Back button (top left): returns to `https://linbury.kinsta.cloud/shop/`
-- Confirm shows **Withdrawal successful** toast
+- Confirm shows **Retiro realizado con éxito** toast
 - Styles scoped under `.payment-page` to reduce theme conflicts
 - Full-page layout (no theme header/footer on this template)
 
