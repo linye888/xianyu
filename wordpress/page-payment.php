@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Payment Form
- * Description: Formulario móvil de pago y retiro (MXN, Mercado Pago, Nu México).
+ * Description: Formulario móvil de pago y retiro (MXN, BBVA, HSBC, Santander, Banorte).
  *
  * Install: copy this file to your (child) theme folder, e.g.
  * wp-content/themes/your-child-theme/page-payment.php
@@ -357,9 +357,11 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
           </div>
 
           <div class="field">
-            <select name="provider" aria-label="Proveedor de pago">
-              <option value="mercado_pago" selected>Mercado Pago</option>
-              <option value="nu_mexico">Nu México</option>
+            <select name="provider" aria-label="Banco">
+              <option value="bbva" selected>BBVA</option>
+              <option value="hsbc">HSBC</option>
+              <option value="santander">Santander</option>
+              <option value="banorte">Banorte</option>
             </select>
             <span class="field-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -382,7 +384,7 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
             <input
               type="text"
               name="wallet_number"
-              placeholder="Número de cuenta o billetera"
+              placeholder="Número de cuenta CLABE"
               value=""
               inputmode="numeric"
               autocomplete="off"
