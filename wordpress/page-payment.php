@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Payment Form
- * Description: Mobile payment and withdrawal form (PHP, GCash, Maya).
+ * Description: Formulario móvil de pago y retiro (MXN, Mercado Pago, Spin by OXXO).
  *
  * Install: copy this file to your (child) theme folder, e.g.
  * wp-content/themes/your-child-theme/page-payment.php
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
 ?>
 <!doctype html>
-<html <?php language_attributes(); ?> class="payment-form-page-root">
+<html lang="es-MX" class="payment-form-page-root">
   <head>
     <meta charset="<?php bloginfo('charset'); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -328,22 +328,22 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
     <div class="payment-page" style="background:#1a1613;min-height:100vh;">
       <main class="page">
         <div class="topbar">
-          <button type="button" class="back-btn" id="back-btn" aria-label="Go back">
+          <button type="button" class="back-btn" id="back-btn" aria-label="Volver">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
-            Back
+            Volver
           </button>
         </div>
 
-        <h1 class="section-label">Payment method</h1>
+        <h1 class="section-label">Método de pago</h1>
 
         <form class="form" id="payment-form" action="#" method="post">
           <div class="field">
             <input
               type="number"
               name="amount"
-              placeholder="Withdrawal limit range 400-200000"
+              placeholder="Límite de retiro: $400–$200,000 MXN"
               min="400"
               max="200000"
               step="1"
@@ -357,9 +357,9 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
           </div>
 
           <div class="field">
-            <select name="provider" aria-label="Payment provider">
-              <option value="gcash" selected>GCash</option>
-              <option value="maya">Maya</option>
+            <select name="provider" aria-label="Proveedor de pago">
+              <option value="mercado_pago" selected>Mercado Pago</option>
+              <option value="spin_oxxo">Spin by OXXO</option>
             </select>
             <span class="field-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -372,7 +372,7 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
             <input
               type="text"
               name="name"
-              placeholder="Name"
+              placeholder="Nombre completo"
               value=""
               autocomplete="off"
             />
@@ -382,7 +382,7 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
             <input
               type="text"
               name="wallet_number"
-              placeholder="Wallet number"
+              placeholder="Número de cuenta o billetera"
               value=""
               inputmode="numeric"
               autocomplete="off"
@@ -394,13 +394,13 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
               id="security-password"
               type="password"
               name="security_password"
-              placeholder="Security password"
+              placeholder="Contraseña de seguridad"
             />
             <button
               type="button"
               class="field-icon clickable"
               id="toggle-password"
-              aria-label="Show password"
+              aria-label="Mostrar contraseña"
             >
               <svg id="eye-open" viewBox="0 0 24 24">
                 <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
@@ -415,15 +415,15 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
           </div>
 
           <div class="summary">
-            <span class="summary-label">Received</span>
-            <span class="summary-value" id="received-amount">0 PHP</span>
+            <span class="summary-label">Recibirás</span>
+            <span class="summary-value" id="received-amount">$0 MXN</span>
           </div>
 
-          <button type="submit" class="submit">Confirm</button>
+          <button type="submit" class="submit">Confirmar</button>
         </form>
       </main>
 
-      <div class="toast" id="success-toast" role="status" aria-live="polite">Withdrawal successful</div>
+      <div class="toast" id="success-toast" role="status" aria-live="polite">Retiro realizado con éxito</div>
     </div>
 
     <script>
@@ -448,12 +448,18 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
           passwordInput.type = isHidden ? "text" : "password";
           eyeOpen.classList.toggle("is-hidden", !isHidden);
           eyeClosed.classList.toggle("is-hidden", isHidden);
-          toggleButton.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+          toggleButton.setAttribute("aria-label", isHidden ? "Ocultar contraseña" : "Mostrar contraseña");
         });
 
         amountInput.addEventListener("input", function () {
           const value = Number(amountInput.value);
-          receivedAmount.textContent = Number.isFinite(value) && value > 0 ? value + " PHP" : "0 PHP";
+          receivedAmount.textContent = Number.isFinite(value) && value > 0
+            ? new Intl.NumberFormat("es-MX", {
+                style: "currency",
+                currency: "MXN",
+                maximumFractionDigits: 0
+              }).format(value) + " MXN"
+            : "$0 MXN";
         });
 
         paymentForm.addEventListener("submit", function (event) {
