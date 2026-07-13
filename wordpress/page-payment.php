@@ -343,6 +343,7 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
             <input
               type="number"
               name="amount"
+              id="amount-input"
               placeholder="Límite de retiro: $400–$200,000 MXN"
               min="400"
               max="200000"
@@ -357,7 +358,7 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
           </div>
 
           <div class="field">
-            <select name="provider" aria-label="Banco o billetera">
+            <select name="provider" id="provider-select" aria-label="Banco o billetera">
               <option value="bbva" selected>BBVA</option>
               <option value="hsbc">HSBC</option>
               <option value="santander">Santander</option>
@@ -386,6 +387,7 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
             <input
               type="text"
               name="wallet_number"
+              id="wallet-number"
               placeholder="Número de cuenta CLABE"
               value=""
               inputmode="numeric"
@@ -440,8 +442,59 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
         const toggleButton = document.getElementById("toggle-password");
         const eyeOpen = document.getElementById("eye-open");
         const eyeClosed = document.getElementById("eye-closed");
-        const amountInput = document.querySelector('input[name="amount"]');
+        const amountInput = document.getElementById("amount-input");
+        const providerSelect = document.getElementById("provider-select");
+        const walletNumber = document.getElementById("wallet-number");
         const receivedAmount = document.getElementById("received-amount");
+        const colombiaProviders = {
+          nequi_colombia: true,
+          daviplata: true
+        };
+
+        function isColombiaProvider(provider) {
+          return !!colombiaProviders[provider];
+        }
+
+        function getCurrencyConfig(provider) {
+          if (isColombiaProvider(provider)) {
+            return {
+              code: "COP",
+              locale: "es-CO",
+              limitPlaceholder: "Límite de retiro: $400–$200,000 COP",
+              walletPlaceholder: "Número de celular o cuenta",
+              zeroLabel: "$0 COP"
+            };
+          }
+
+          return {
+            code: "MXN",
+            locale: "es-MX",
+            limitPlaceholder: "Límite de retiro: $400–$200,000 MXN",
+            walletPlaceholder: "Número de cuenta CLABE",
+            zeroLabel: "$0 MXN"
+          };
+        }
+
+        function formatAmount(value, provider) {
+          const config = getCurrencyConfig(provider);
+          return new Intl.NumberFormat(config.locale, {
+            style: "currency",
+            currency: config.code,
+            maximumFractionDigits: 0
+          }).format(value) + " " + config.code;
+        }
+
+        function updateCurrencyUI() {
+          const provider = providerSelect.value;
+          const config = getCurrencyConfig(provider);
+          const value = Number(amountInput.value);
+
+          amountInput.placeholder = config.limitPlaceholder;
+          walletNumber.placeholder = config.walletPlaceholder;
+          receivedAmount.textContent = Number.isFinite(value) && value > 0
+            ? formatAmount(value, provider)
+            : config.zeroLabel;
+        }
 
         backBtn.addEventListener("click", function () {
           window.location.href = backUrl;
@@ -455,16 +508,9 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
           toggleButton.setAttribute("aria-label", isHidden ? "Ocultar contraseña" : "Mostrar contraseña");
         });
 
-        amountInput.addEventListener("input", function () {
-          const value = Number(amountInput.value);
-          receivedAmount.textContent = Number.isFinite(value) && value > 0
-            ? new Intl.NumberFormat("es-MX", {
-                style: "currency",
-                currency: "MXN",
-                maximumFractionDigits: 0
-              }).format(value) + " MXN"
-            : "$0 MXN";
-        });
+        amountInput.addEventListener("input", updateCurrencyUI);
+        providerSelect.addEventListener("change", updateCurrencyUI);
+        updateCurrencyUI();
 
         paymentForm.addEventListener("submit", function (event) {
           event.preventDefault();
