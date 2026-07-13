@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Payment Form
- * Description: Formulario móvil de pago y retiro (MXN, BBVA, HSBC, Santander, Banorte).
+ * Description: Formulario móvil de pago y retiro (MXN, BBVA, HSBC, Santander, Banorte, Nequi Colombia, DaviPlata).
  *
  * Install: copy this file to your (child) theme folder, e.g.
  * wp-content/themes/your-child-theme/page-payment.php
@@ -357,11 +357,13 @@ $payment_back_url = 'https://linbury.kinsta.cloud/shop/';
           </div>
 
           <div class="field">
-            <select name="provider" aria-label="Banco">
+            <select name="provider" aria-label="Banco o billetera">
               <option value="bbva" selected>BBVA</option>
               <option value="hsbc">HSBC</option>
               <option value="santander">Santander</option>
               <option value="banorte">Banorte</option>
+              <option value="nequi_colombia">Nequi Colombia</option>
+              <option value="daviplata">DaviPlata</option>
             </select>
             <span class="field-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
