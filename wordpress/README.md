@@ -24,7 +24,8 @@
 
 ## Features
 
-- Mexican Spanish (es-MX) UI, MXN currency, BBVA / HSBC / Santander / Banorte / Nequi Colombia / DaviPlata
+- Mexican Spanish (es-MX) UI, MXN by default; Nequi Colombia / DaviPlata switch to COP
+- Banks/wallets: BBVA / HSBC / Santander / Banorte / Nequi Colombia / DaviPlata
 - Back button (top left): returns to `https://linbury.kinsta.cloud/shop/`
 - Confirm shows **Retiro realizado con éxito** toast
 - Styles scoped under `.payment-page` to reduce theme conflicts
