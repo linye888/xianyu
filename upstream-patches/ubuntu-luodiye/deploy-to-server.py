@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Deploy popup-template patch to live LP Admin (43.160.237.168).
+"""Deploy popup-template patch to linbury main admin (43.160.237.168).
+
+Target: http://HOST/linbury/admin/  (service: linbury, ADMIN_DIR=/opt/linbury/admin)
 
 Usage:
   DEPLOY_SSH_PASSWORD='your-ssh-password' python3 deploy-to-server.py
@@ -77,17 +79,24 @@ def main() -> None:
         remote = f"""
 set -euo pipefail
 SRC=/opt/ubuntu-luodiye/src
+LINBURY_ADMIN=/opt/linbury/admin
 test -d "$SRC"
+test -d /opt/linbury
 cd "$SRC"
 sudo tar -xzf /tmp/popup-patch.tgz -C "$SRC"
+# Keep existing TemplateScope / op5xd exports if present — only merge popup files safely.
 sudo chown -R lpadmin:lpadmin "$SRC"
 PNPM=$(command -v pnpm || echo /usr/bin/pnpm)
 sudo -u lpadmin bash -lc "cd $SRC && $PNPM --filter @luodiye/shared build && $PNPM --filter @luodiye/templates build"
-sudo -u lpadmin bash -lc "cd $SRC/apps/admin && VITE_BASE_PATH=/admin/ VITE_API_BASE=http://{HOST} VITE_DEPLOY_TARGET=self-hosted $PNPM build:ubuntu"
+sudo -u lpadmin bash -lc "cd $SRC/apps/admin && VITE_BASE_PATH=/linbury/admin/ VITE_DEPLOY_TARGET=self-hosted $PNPM build"
 sudo -u lpadmin bash -lc "cd $SRC && $PNPM --filter @luodiye/server build" || true
-sudo rsync -a "$SRC/apps/admin/dist/" /opt/ubuntu-luodiye/admin/
-sudo systemctl restart ubuntu-luodiye || true
-sudo systemctl status ubuntu-luodiye --no-pager -l | head -25 || true
+sudo rsync -a --delete "$SRC/apps/admin/dist/" "$LINBURY_ADMIN/"
+sudo chown -R lpadmin:lpadmin /opt/linbury/admin
+sudo systemctl restart linbury
+sleep 2
+systemctl is-active linbury
+curl -sS http://127.0.0.1:3001/health || true
+curl -sS -o /dev/null -w "popup-api:%{{http_code}}\\n" http://127.0.0.1:3001/api/admin/popup-templates || true
 rm -f /tmp/popup-patch.tgz
 echo DEPLOY_OK
 """.format(HOST=HOST)
@@ -103,7 +112,7 @@ echo DEPLOY_OK
         ssh.close()
         if "DEPLOY_OK" not in out:
             raise SystemExit("deploy failed")
-        print(f"已更新: http://{HOST}/admin/  → 侧栏「弹窗模板管理」")
+        print(f"已更新: http://{HOST}/linbury/admin/  → 侧栏「弹窗模板管理」")
 
 
 if __name__ == "__main__":
