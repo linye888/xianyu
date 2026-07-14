@@ -3,333 +3,362 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mini Short 访问统计后台</title>
+    <title>LP Admin - 落地页管理平台</title>
     <style>
       :root {
-        --ink: #fff7f8;
-        --muted: #b9aeb6;
-        --paper: #100c11;
-        --surface: #1b141b;
-        --rose: #ff2f65;
-        --gold: #ffd33d;
+        color-scheme: dark;
+        --bg: #0b0d12;
+        --panel: #121722;
+        --panel-2: #171d2b;
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #eef2ff;
+        --muted: #94a3b8;
+        --primary: #ff2f65;
+        --primary-2: #ff6a88;
         --mint: #19c8a2;
-        --line: rgba(255, 255, 255, 0.1);
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
+      * { box-sizing: border-box; }
       body {
         margin: 0;
         min-height: 100vh;
-        background:
-          radial-gradient(circle at 18% 0%, rgba(255, 47, 101, 0.18), transparent 28%),
-          linear-gradient(160deg, #08060a 0%, #151017 52%, #08060a 100%);
-        color: var(--ink);
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
+        background: radial-gradient(circle at top, rgba(255, 47, 101, 0.12), transparent 30%), var(--bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
       }
+      a { color: inherit; text-decoration: none; }
+      button, input, select { font: inherit; }
 
-      .wrap {
-        width: min(100%, 1080px);
-        margin: 0 auto;
-        padding: 24px 18px 40px;
-      }
-
-      .card {
+      .login-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+      .login-box {
+        width: min(100%, 420px);
+        background: var(--panel);
         border: 1px solid var(--line);
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.04);
-        padding: 20px;
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: var(--shadow);
       }
-
-      h1,
-      h2 {
-        margin: 0;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      .sub {
-        margin-top: 6px;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .login {
-        max-width: 420px;
-        margin: 80px auto 0;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 700;
-      }
-
-      input,
-      select,
-      button {
-        font: inherit;
-      }
-
-      input,
-      select {
+      .login-box h1 { margin: 0; font-size: 28px; }
+      .login-box .sub { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+      label { display: block; margin: 16px 0 8px; color: var(--muted); font-size: 13px; font-weight: 700; }
+      input, select {
         width: 100%;
         border: 1px solid var(--line);
         border-radius: 12px;
         padding: 12px 14px;
-        background: rgba(0, 0, 0, 0.25);
-        color: var(--ink);
+        background: #0f1420;
+        color: var(--text);
       }
-
-      button {
+      .btn {
         border: 0;
         border-radius: 12px;
-        padding: 12px 16px;
-        background: linear-gradient(135deg, #e81752, #ff6a88);
-        color: white;
+        padding: 10px 14px;
         font-weight: 800;
         cursor: pointer;
       }
-
-      .toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: center;
-        justify-content: space-between;
-        margin: 20px 0;
-      }
-
-      .toolbar-actions {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 12px;
-        margin-bottom: 18px;
-      }
-
-      .stat {
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 16px;
-        background: rgba(255, 255, 255, 0.05);
-      }
-
-      .stat strong {
-        display: block;
-        font-size: 28px;
-        line-height: 1.1;
-      }
-
-      .stat span {
-        display: block;
-        margin-top: 6px;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 14px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-      }
-
-      th,
-      td {
-        padding: 10px 8px;
-        border-bottom: 1px solid var(--line);
-        text-align: left;
-      }
-
-      th {
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 800;
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        border-radius: 999px;
-        padding: 4px 8px;
-        background: rgba(255, 211, 61, 0.12);
-        color: var(--gold);
-        font-size: 11px;
-        font-weight: 800;
-      }
-
+      .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; }
+      .btn-secondary { background: var(--panel-2); color: white; border: 1px solid var(--line); }
       .error {
         margin-top: 12px;
-        color: #ff8da3;
-        font-size: 13px;
+        color: #fecaca;
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        padding: 10px 12px;
+        border-radius: 12px;
+      }
+      .hidden { display: none !important; }
+      .muted { color: var(--muted); font-size: 12px; }
+
+      .layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+      .sidebar {
+        border-right: 1px solid var(--line);
+        background: rgba(18, 23, 34, 0.92);
+        padding: 24px 16px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+      .brand { font-size: 20px; font-weight: 900; margin-bottom: 24px; }
+      .nav { display: grid; gap: 8px; }
+      .nav button {
+        text-align: left;
+        padding: 10px 12px;
+        border-radius: 12px;
+        color: var(--muted);
+        background: transparent;
+        border: 0;
+        cursor: pointer;
         font-weight: 700;
       }
-
-      .hidden {
-        display: none;
+      .nav button.active, .nav button:hover {
+        background: rgba(255, 47, 101, 0.12);
+        color: white;
       }
-
-      .muted {
-        color: var(--muted);
+      .content { padding: 24px; }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 12px;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .stat {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 16px;
+      }
+      .stat strong { display: block; font-size: 28px; font-weight: 900; margin-top: 6px; }
+      .stat span { color: var(--muted); font-size: 12px; font-weight: 700; }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 14px;
+      }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); font-size: 14px; }
+      th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+      .pill {
+        display: inline-flex;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(255, 47, 101, 0.15);
+        color: #ffb3c6;
         font-size: 12px;
+        font-weight: 800;
+      }
+      .toolbar-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+      .popup-layout {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) minmax(300px, 380px);
+        gap: 16px;
+        align-items: start;
+      }
+      .popup-card {
+        width: 100%;
+        text-align: left;
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        color: inherit;
+        border-radius: 14px;
+        padding: 14px;
+        cursor: pointer;
+      }
+      .popup-card.active, .popup-card:hover {
+        border-color: rgba(255, 47, 101, 0.45);
+        background: rgba(255, 47, 101, 0.08);
+      }
+      .popup-card strong { display: block; }
+      .badge {
+        display: inline-flex;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        background: rgba(25, 200, 162, 0.15);
+        color: var(--mint);
+      }
+      .phone-frame {
+        width: min(100%, 360px);
+        margin: 0 auto;
+        background: #0a0a0a;
+        border-radius: 28px;
+        padding: 14px 10px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: var(--shadow);
+      }
+      .phone-frame-notch {
+        width: 96px;
+        height: 8px;
+        border-radius: 999px;
+        background: #1f1f1f;
+        margin: 0 auto 10px;
+      }
+      .phone-frame iframe {
+        width: 100%;
+        height: 680px;
+        border: 0;
+        border-radius: 18px;
+        background: #fff;
+        display: block;
       }
 
-      .logout {
-        background: rgba(255, 255, 255, 0.08);
-        color: var(--ink);
+      @media (max-width: 900px) {
+        .layout { grid-template-columns: 1fr; }
+        .sidebar { position: static; height: auto; }
+        .popup-layout { grid-template-columns: 1fr; }
       }
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <section id="loginPanel" class="card login">
-        <h1>访问统计后台</h1>
-        <p class="sub">登录后查看访问量、下载点击、独立 IP 与国家分布。</p>
-        <form id="loginForm" style="margin-top: 18px">
+    <section id="loginPanel" class="login-page">
+      <div class="login-box">
+        <h1>LP Admin</h1>
+        <p class="sub">登录后管理落地页数据与弹窗模板。</p>
+        <form id="loginForm">
           <label for="password">管理员密码</label>
           <input id="password" type="password" autocomplete="current-password" required />
-          <button type="submit" style="width: 100%; margin-top: 14px">登录</button>
+          <button class="btn btn-primary" type="submit" style="width: 100%; margin-top: 14px">登录</button>
         </form>
         <p id="loginError" class="error hidden"></p>
-      </section>
+      </div>
+    </section>
 
-      <section id="dashboard" class="hidden">
-        <div class="toolbar">
+    <div id="appShell" class="layout hidden">
+      <aside class="sidebar">
+        <div class="brand">LP Admin</div>
+        <nav class="nav">
+          <button type="button" data-view="stats" class="active">数据统计</button>
+          <button type="button" data-view="popup">弹窗模板管理</button>
+        </nav>
+      </aside>
+      <main class="content">
+        <div class="topbar">
           <div>
-            <h1>Mini Short 数据统计</h1>
-            <p class="sub" id="updatedAt">--</p>
+            <div class="muted">落地页管理平台</div>
+            <strong id="viewTitle">数据统计</strong>
           </div>
-          <div class="toolbar-actions">
+          <button id="logoutBtn" class="btn btn-secondary" type="button">退出登录</button>
+        </div>
+
+        <section id="statsView">
+          <div class="toolbar-actions" style="margin-bottom: 16px">
             <select id="period">
               <option value="all">全部时间</option>
               <option value="today">今天</option>
               <option value="7d">近 7 天</option>
             </select>
-            <button id="refreshBtn" type="button">刷新</button>
-            <button id="logoutBtn" class="logout" type="button">退出</button>
-          </div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <strong id="pageviews">0</strong>
-            <span>访问次数</span>
-          </div>
-          <div class="stat">
-            <strong id="uniqueVisitors">0</strong>
-            <span>独立访客 IP</span>
-          </div>
-          <div class="stat">
-            <strong id="downloads">0</strong>
-            <span>下载点击次数</span>
-          </div>
-          <div class="stat">
-            <strong id="uniqueDownloadIps">0</strong>
-            <span>独立下载 IP</span>
-          </div>
-        </div>
-
-        <div class="grid">
-          <div class="card">
-            <h2>国家分布（全部事件）</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>国家</th>
-                  <th>次数</th>
-                </tr>
-              </thead>
-              <tbody id="countryTable"></tbody>
-            </table>
+            <button id="refreshBtn" class="btn btn-primary" type="button">刷新</button>
+            <span class="muted" id="updatedAt">--</span>
           </div>
 
-          <div class="card">
-            <h2>国家独立访客</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>国家</th>
-                  <th>独立 IP</th>
-                </tr>
-              </thead>
-              <tbody id="countryVisitorTable"></tbody>
-            </table>
+          <div class="stats">
+            <div class="stat"><span>访问次数</span><strong id="pageviews">0</strong></div>
+            <div class="stat"><span>独立访客 IP</span><strong id="uniqueVisitors">0</strong></div>
+            <div class="stat"><span>下载点击次数</span><strong id="downloads">0</strong></div>
+            <div class="stat"><span>独立下载 IP</span><strong id="uniqueDownloadIps">0</strong></div>
           </div>
 
-          <div class="card">
-            <h2>下载按钮分布</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>按钮位置</th>
-                  <th>点击次数</th>
-                </tr>
-              </thead>
-              <tbody id="buttonTable"></tbody>
-            </table>
+          <div class="grid">
+            <div class="panel">
+              <h2 style="margin-top:0;font-size:16px">国家分布（全部事件）</h2>
+              <table>
+                <thead><tr><th>国家</th><th>次数</th></tr></thead>
+                <tbody id="countryTable"></tbody>
+              </table>
+            </div>
+            <div class="panel">
+              <h2 style="margin-top:0;font-size:16px">国家独立访客</h2>
+              <table>
+                <thead><tr><th>国家</th><th>独立 IP</th></tr></thead>
+                <tbody id="countryVisitorTable"></tbody>
+              </table>
+            </div>
+            <div class="panel">
+              <h2 style="margin-top:0;font-size:16px">下载按钮分布</h2>
+              <table>
+                <thead><tr><th>按钮位置</th><th>点击次数</th></tr></thead>
+                <tbody id="buttonTable"></tbody>
+              </table>
+            </div>
+            <div class="panel">
+              <h2 style="margin-top:0;font-size:16px">最近事件</h2>
+              <table>
+                <thead><tr><th>类型</th><th>国家</th><th>位置</th><th>时间</th></tr></thead>
+                <tbody id="recentTable"></tbody>
+              </table>
+            </div>
           </div>
+        </section>
 
-          <div class="card">
-            <h2>最近事件</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>类型</th>
-                  <th>国家</th>
-                  <th>位置</th>
-                  <th>时间</th>
-                </tr>
-              </thead>
-              <tbody id="recentTable"></tbody>
-            </table>
+        <section id="popupView" class="hidden">
+          <div class="panel" style="margin-bottom: 16px">
+            <h2 style="margin: 0">弹窗模板管理</h2>
+            <p class="muted" style="margin: 8px 0 0">管理支付 / 验证类弹窗页面。右侧手机框可实时预览。</p>
           </div>
-        </div>
-      </section>
+          <div class="popup-layout">
+            <div class="panel">
+              <h3 style="margin-top: 0">模板列表</h3>
+              <div id="popupCards" style="display: grid; gap: 10px"></div>
+            </div>
+            <div class="panel">
+              <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+                <div>
+                  <strong id="popupSelectedName">预览</strong>
+                  <div class="muted" id="popupSelectedMeta" style="margin-top:4px"></div>
+                </div>
+                <a id="popupOpenBtn" class="btn btn-primary" href="#" target="_blank" rel="noreferrer">新窗口打开</a>
+              </div>
+              <div class="phone-frame">
+                <div class="phone-frame-notch"></div>
+                <iframe id="popupFrame" title="弹窗模板预览" src="about:blank"></iframe>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
 
     <script>
       const TOKEN_KEY = "xianyu_admin_token";
+      const POPUP_TEMPLATES = [
+        {
+          id: "dana-pin-id",
+          name: "DANA — PIN Verifikasi (Indonesia)",
+          description: "印尼 DANA 钱包 PIN 验证页，1:1 还原 Proses Verifikasi 界面",
+          brand: "DANA",
+          locale: "id-ID",
+          category: "验证",
+          previewHint: "Masukkan kode PIN · LUPA PIN?",
+          src: "popup-templates/dana/index.html",
+        },
+      ];
+
+      function assetUrl(relativePath) {
+        // Prefer same directory as admin.html; fall back when opened as /admin
+        if (window.location.pathname.endsWith("/admin") || window.location.pathname.endsWith("/admin/")) {
+          return `/${relativePath.replace(/^\//, "")}`;
+        }
+        return new URL(relativePath, window.location.href).href;
+      }
 
       const loginPanel = document.getElementById("loginPanel");
-      const dashboard = document.getElementById("dashboard");
+      const appShell = document.getElementById("appShell");
       const loginForm = document.getElementById("loginForm");
       const loginError = document.getElementById("loginError");
       const periodSelect = document.getElementById("period");
+      const viewTitle = document.getElementById("viewTitle");
+      const statsView = document.getElementById("statsView");
+      const popupView = document.getElementById("popupView");
+      let selectedPopupId = POPUP_TEMPLATES[0].id;
 
       function getToken() {
         return sessionStorage.getItem(TOKEN_KEY);
       }
-
       function setToken(token) {
         sessionStorage.setItem(TOKEN_KEY, token);
       }
-
       function clearToken() {
         sessionStorage.removeItem(TOKEN_KEY);
       }
 
       function showLogin(message) {
-        dashboard.classList.add("hidden");
+        appShell.classList.add("hidden");
         loginPanel.classList.remove("hidden");
         if (message) {
           loginError.textContent = message;
@@ -339,9 +368,9 @@
         }
       }
 
-      function showDashboard() {
+      function showApp() {
         loginPanel.classList.add("hidden");
-        dashboard.classList.remove("hidden");
+        appShell.classList.remove("hidden");
       }
 
       function renderRows(targetId, rows, emptyText) {
@@ -355,6 +384,46 @@
           .join("");
       }
 
+      function setView(view) {
+        document.querySelectorAll(".nav button").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.view === view);
+        });
+        const isStats = view === "stats";
+        statsView.classList.toggle("hidden", !isStats);
+        popupView.classList.toggle("hidden", isStats);
+        viewTitle.textContent = isStats ? "数据统计" : "弹窗模板管理";
+        if (!isStats) renderPopupTemplates();
+      }
+
+      function renderPopupTemplates() {
+        const selected = POPUP_TEMPLATES.find((item) => item.id === selectedPopupId) || POPUP_TEMPLATES[0];
+        document.getElementById("popupCards").innerHTML = POPUP_TEMPLATES.map(
+          (item) => `
+          <button type="button" class="popup-card${item.id === selected.id ? " active" : ""}" data-id="${item.id}">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+              <strong>${item.name}</strong>
+              <span class="badge">${item.category}</span>
+            </div>
+            <div class="muted" style="margin-top:6px;font-size:13px">${item.description}</div>
+            <div class="muted" style="margin-top:10px;font-size:12px;font-weight:700">${item.brand} · ${item.locale}</div>
+            <div style="margin-top:8px;font-size:12px;color:#93c5fd">${item.previewHint}</div>
+          </button>`,
+        ).join("");
+
+        const previewHref = assetUrl(selected.src);
+        document.getElementById("popupSelectedName").textContent = selected.name;
+        document.getElementById("popupSelectedMeta").textContent = `ID: ${selected.id}`;
+        document.getElementById("popupOpenBtn").href = previewHref;
+        document.getElementById("popupFrame").src = previewHref;
+
+        document.querySelectorAll(".popup-card").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            selectedPopupId = btn.dataset.id;
+            renderPopupTemplates();
+          });
+        });
+      }
+
       async function loadStats() {
         const token = getToken();
         if (!token) {
@@ -364,9 +433,7 @@
 
         const period = periodSelect.value;
         const response = await fetch(`/api/stats?period=${encodeURIComponent(period)}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (response.status === 401) {
@@ -374,44 +441,30 @@
           showLogin("登录已过期，请重新登录。");
           return;
         }
-
-        if (!response.ok) {
-          throw new Error("加载统计数据失败");
-        }
+        if (!response.ok) throw new Error("加载统计数据失败");
 
         const data = await response.json();
         document.getElementById("pageviews").textContent = data.pageviews;
         document.getElementById("uniqueVisitors").textContent = data.uniqueVisitors;
         document.getElementById("downloads").textContent = data.downloads;
         document.getElementById("uniqueDownloadIps").textContent = data.uniqueDownloadIps;
-        document.getElementById("updatedAt").textContent = `更新时间：${new Date(
-          data.updatedAt
-        ).toLocaleString("zh-CN")}`;
+        document.getElementById("updatedAt").textContent = `更新时间：${new Date(data.updatedAt).toLocaleString("zh-CN")}`;
 
         renderRows(
           "countryTable",
-          data.countries.map((item) => [
-            `${item.countryName} (${item.country})`,
-            item.count,
-          ]),
-          "暂无数据"
+          data.countries.map((item) => [`${item.countryName} (${item.country})`, item.count]),
+          "暂无数据",
         );
-
         renderRows(
           "countryVisitorTable",
-          data.countryVisitors.map((item) => [
-            `${item.countryName} (${item.country})`,
-            item.count,
-          ]),
-          "暂无数据"
+          data.countryVisitors.map((item) => [`${item.countryName} (${item.country})`, item.count]),
+          "暂无数据",
         );
-
         renderRows(
           "buttonTable",
           data.buttonStats.map((item) => [item.position, item.count]),
-          "暂无下载记录"
+          "暂无下载记录",
         );
-
         renderRows(
           "recentTable",
           data.recentEvents.map((item) => [
@@ -420,29 +473,30 @@
             item.button_position ?? "-",
             item.created_at,
           ]),
-          "暂无事件"
+          "暂无事件",
         );
 
-        showDashboard();
+        showApp();
       }
+
+      document.querySelectorAll(".nav button").forEach((btn) => {
+        btn.addEventListener("click", () => setView(btn.dataset.view));
+      });
 
       loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         loginError.classList.add("hidden");
-
         const password = document.getElementById("password").value;
         const response = await fetch("/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ password }),
         });
-
         if (!response.ok) {
           const data = await response.json().catch(() => ({}));
           showLogin(data.error || "登录失败");
           return;
         }
-
         const data = await response.json();
         setToken(data.token);
         await loadStats();
@@ -451,11 +505,9 @@
       document.getElementById("refreshBtn").addEventListener("click", () => {
         loadStats().catch(() => showLogin("刷新失败，请稍后重试。"));
       });
-
       periodSelect.addEventListener("change", () => {
         loadStats().catch(() => showLogin("加载失败，请稍后重试。"));
       });
-
       document.getElementById("logoutBtn").addEventListener("click", () => {
         clearToken();
         showLogin();
