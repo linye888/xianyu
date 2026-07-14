@@ -21,6 +21,13 @@ pnpm build
 # 再按原方式 rsync admin dist + 重启 ubuntu-luodiye 服务
 ```
 
+### 一键 SSH 部署到 43.160.237.168
+
+```bash
+pip install paramiko
+DEPLOY_SSH_PASSWORD='你的SSH密码' python3 upstream-patches/ubuntu-luodiye/deploy-to-server.py
+```
+
 ## 关键文件
 
 - `apps/admin/src/components/Layout.tsx` — 侧边栏菜单
